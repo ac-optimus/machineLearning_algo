@@ -1,14 +1,7 @@
-#generalized cross_Validation class
+import pandas as pd
+import numpy as np
+from sklearn.metrics import mean_squared_error
 class cross_validation:
-    def __init__(self,
-                 model=None,\
-                 hyperparam_lst=None):
-        self.model = model  #pass model object that needs to be train
-        self.hyperparam_lst = hyperparam_lst
-        
-    def _splt_datst(self,n,data):
-        ptr = 0.0#generalized cross_Validation class
-class cross_validation(eval):
     def __init__(self,
                  model=None,\
                  hyperparam_lst=None):
@@ -37,8 +30,7 @@ class cross_validation(eval):
                 self.model.fit(train_i[train_i.columns[:-1]],\
                                   train_i[[train_i.columns[-1]]])
                 y_pred = self.model.predict(val[val.columns[:-1]])
-                
-                mse = mean_squared_error(y_pred,val[[val.columns[-1]]])
+                mse = mean_squared_error(y_pred,val[val.columns[-1]])
                 if mse < alpha_bst_i[1]:
                     alpha_bst_i[0] = optiml_param
                     alpha_bst_i[1] = mse
@@ -62,10 +54,5 @@ class cross_validation(eval):
             mse_val  = mean_squared_error(y_pred_val,val_i[val_i.columns[-1]])
             mse_test = mean_squared_error(y_pred_test,test[test.columns[-1]])
             mse_train = mean_squared_error(y_pred_train,train[train.columns[-1]])
-            report.append((self.model.n_neighbors,(mse_val,mse_train,mse_train)))
-        return report_squared_error(y_pred,val[[val.columns[-1]]])
-                if mse < alpha_bst_i[1]:
-                    alpha_bst_i[0] = optiml_param
-                    alpha_bst_i[1] = mse
-            lst_alpha.append(alpha_bst_i)
-        return np.array(lst_alpha)
+            report.append((self.model.n_neighbors,(mse_train,mse_val,mse_train)))
+        return report
