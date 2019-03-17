@@ -1,6 +1,4 @@
-#contains all the distance metrics
 import numpy as np
-
 class dist_metic:
 
     def __Euclidn__(self,x1,x2):   #x1 and x2 can be matrix
@@ -16,6 +14,6 @@ class dist_metic:
     def __Cosn__(self,x1,x2):
         x1 = np.array(x1)
         x2 = np.array(x2)
-        den = np.dot(x1,x2)   #pointwise dot porduct
+        den = np.dot(x1,x2.transpose()).item()   #pointwise dot porduct
         num = np.linalg.norm(x1)*np.linalg.norm(x2)   #product of there norms
-        return num/den
+        return den/num

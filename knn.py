@@ -1,9 +1,12 @@
 #class for knn classification and regression task
 from distanceMetric import dist_metic
 from evaluationMetric import eval
+from knn_helper import helper
 import numpy as np
+from sklearn.metrics import mean_squared_error
 
-class KNN(dist_metic,eval):
+    
+class KNN(dist_metic,helper):
     #we will be playing around with matrix here
     def __init__(self, type_ = 'Classification',\
                      x_train=None, y_train=None, \
@@ -12,55 +15,28 @@ class KNN(dist_metic,eval):
         
         self.k = K
         self.type = type_
-        self.distance_metric = distance_metric
-        
-    
-    def prediction(self, x_train, x_test, y_train, y_test):
-        
-        x_train,x_test = map(np.matrix ,(x_train,x_test))
-        y_train, y_test = map(np.array, (y_train,y_test))
-        y_hat = np.zeros(len(y_test))
+        self.distance_metric = distance_metric   
+   
+    def predict(self,  x_test):
+        x_test = np.matrix(x_test)
+        y_hat = np.zeros(len(x_test))
 
-        for xi in range(len(x_test)):
-            pnt_distVs_y_val = {}
-            for i in range(len(x_train)):
-                l = self._select_dist(x_test[xi], x_train[i])
-                pnt_distVs_y_val[l] = y_train[i]
-                #distance versus the y_label/y_value
-            dist_order = list(pnt_distVs_y_val.keys())
+        for xi in range(len(x_test)):               
+            dist_order = list(self.get_dstnces(x_test[xi]))#list(some_dict) gives the list of keys
             np.sort(dist_order)    #inplace sort
-            k_nearstPnts_y_val = []
-            for j in range(self.k):
-             #pick the fist k elements
-                k_nearstPnts_y_val.append(dist_order[j])
-            y_hat[xi]=self.prdct_forPnt(k_nearstPnts_y_val)
-        self.y = y_test
-        self.y_hat = y_hat
+            kNN = self.get_kNN(dist_order)#pass the distances
+            y_hat[xi]=self.prdct_forPnt(kNN)         
         return y_hat
-    
-    def _select_dist(self,x1,x2):
-        if self.distance_metric == "Euclidean":
-            return self.__Euclidn__(x1, x2)
-        elif self.distance_metric == "Cosine-Similarity":
-            return self.__Cosn__(x1, x2)
-        elif self.distance_metric == "Manhattan":
-            return self.__Manhattn__(x1, x2)
-  
 
-    def prdct_forPnt(self,k_nrstPnts):
-        k_nrstPnts = list(k_nrstPnts)
-        if self.type == "Classification":
-            #perform classification
-            return max(k_nrstPnts,key=k_nrstPnts.count)
-            
-        elif self.type == "Regression":
-            #perform regression, we do interpolation
-            return sum(k_nrstPnts)/len(k_nrstPnts)
-        
-    def test_(self,eval_measure = "RMSE"):
+    def fit(self,x,y):
+        self.x_train = np.matrix(x)
+        self.y_train = np.array(y)  
+       
+    def test_(self,y_hat,ytest,eval_measure = "RMSE"):
+        y = ytest
         try:
             if eval_measure == "RMSE":
-                return self.rmse(self.y_hat,self.y)
+                return np.sqrt(mean_squared_error(y_hat,y))
        # except Exception as e :
         except AttributeError:
             return "first call predict method."
