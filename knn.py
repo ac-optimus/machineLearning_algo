@@ -34,7 +34,7 @@ class knn_helper:
     
     def get_kNN(self, DistLst):
         k_nearstPnts_y_val = []
-        for j in range(self.k):
+        for j in range(self.n_neighbors):
             k_nearstPnts_y_val.append(DistLst[j])
         return k_nearstPnts_y_val
 
@@ -45,7 +45,7 @@ class KNN(dist_metic,knn_helper):
                         x_test=None,y_test=None, \
                             distance_metric = 'Euclidean', K=3):
         
-        self.k = K
+        self.n_neighbors = K
         self.type = type_
         self.distance_metric = distance_metric   
    
