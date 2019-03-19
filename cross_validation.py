@@ -4,8 +4,9 @@ from sklearn.metrics import mean_squared_error
 class cross_validation:
     def __init__(self,
                  model=None,\
-                 hyperparam_lst=None):
+                 hyperparam_lst=None, task_ = "Lasso_or_Ridge_regression"):
         self.model = model  #pass model object that needs to be train
+        self.task_ = task_
         self.hyperparam_lst = hyperparam_lst
         
     def _splt_datst(self,n,data):
@@ -23,10 +24,10 @@ class cross_validation:
             val = folds[i]
             train_i = pd.concat(folds[:i]+folds[i+1:])
             alpha_bst_i = [self.hyperparam_lst[0],np.inf]
-            
             for i in self.hyperparam_lst:  #check for best lambda in a fold
                 optiml_param  = i
-                self.model.n_neighbors = optiml_param
+                self._change_hyperparamter_(i,self.task_ )
+            #    self.model.alpha = optiml_param
                 self.model.fit(train_i[train_i.columns[:-1]],\
                                   train_i[[train_i.columns[-1]]])
                 y_pred = self.model.predict(val[val.columns[:-1]])
@@ -36,6 +37,12 @@ class cross_validation:
                     alpha_bst_i[1] = mse
             lst_alpha.append(alpha_bst_i)
         return lst_alpha
+    
+    def _change_hyperparamter_(self, k, type_ ="Lasso_or_Ridge_regression"):
+        if type_ == "KNN":
+            self.model.n_neighbors = k  
+        elif type_ == "Lasso_or_Ridge_regression":
+            self.model.alpha = k
 
     def report_scores(self,train,test,n):
         folds = self._splt_datst(n,train)
