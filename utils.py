@@ -4,6 +4,14 @@ import itertools
 from sklearn import preprocessing
 from sklearn.utils import shuffle
 
+def accuracy(y_hat,y):
+    score = 0
+    for i in range(len(y_hat)):
+        if y_hat[i] == y[i]:
+            score += 1
+        
+    return score/len(y_hat)
+
 
 def evaluate_Poly(X_values,theata): 
     value = np.matmul(X_values,theata[1:]) + theata[0]
