@@ -60,7 +60,7 @@ class dist_metic:
 class prepareDatase:
 
     def __repr__(self):
-        return "Parameter : dataset,normalized,ratio of train to test to split the dataset,split the dataset into (x_train, y_train, x_test, y_test)."\
+        return "Parameter : dataset(.csv),normalized,ratio of train to test to split the dataset,split the dataset into (x_train, y_train, x_test, y_test)."\
             "\n Methods: \n noramilize_theDatst : Normalize dataset feature wise.\n"\
                 " splitInto_test_train : split dataset into given feature\n get_train_test : returns train and test set queries."
     def noramilize_theDatst(self, dataset):
@@ -81,8 +81,9 @@ class prepareDatase:
         return trainset,testset
 
     def get_train_test(self,dset,normlzd = False,\
-                                ratio = 1,x_y_split = False):    
-        dataset = pd.read_excel(dset)
+                                ratio = 1,x_y_split = False):
+            
+        dataset = pd.read_csv(dset)
         dataset = dataset[dataset.columns[1:]]
         dataset = shuffle(dataset)
         #test:train == 30%:70% dataset
