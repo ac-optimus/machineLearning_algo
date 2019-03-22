@@ -2,12 +2,13 @@
 import pandas as pd
 from sklearn.utils import shuffle
 from knn import KNN
-from distanceMetric import dist_metic
-from evaluationMetric import eval
+import sys
+sys.path.append("..")
+from utils import dist_metic
 
 #dataset prepration
 if __name__ == "__main__":
-    df = pd.read_excel("dataset/realEstate.xlsx")
+    df = pd.read_csv("../dataset/realEstate.csv")
     df = shuffle(df/df.mean())#normalize
     train = df.iloc[:2*int(len(df)/3)]#2/3 goes for traning
     test =  df.iloc[2*int(len(df)/3):]
