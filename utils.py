@@ -107,3 +107,8 @@ class prepareDatase:
             x_test  = test[test.columns[:-1]]
             y_test = test[[test.columns[-1]]]          
             return x_train,y_train,x_test,y_test
+
+    def split_into_instances_and_label(self,dataset):
+        x_dataset = dataset[dataset.columns[:-1]]
+        y_dataset = dataset[[dataset.columns[-1]]]
+        return x_dataset, y_dataset
