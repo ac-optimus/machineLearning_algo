@@ -1,4 +1,6 @@
 #class for knn classification and regression task
+import sys
+sys.path.append("..")
 from utils import dist_metic
 from evaluationMetric import eval
 import numpy as np
